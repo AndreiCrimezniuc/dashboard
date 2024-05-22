@@ -16,6 +16,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Error defines model for error.
+type Error struct {
+	Code    *int    `json:"code,omitempty"`
+	Message *string `json:"message,omitempty"`
+}
+
+// Error401 defines model for error401.
+type Error401 = Error
+
+// Error500 defines model for error500.
+type Error500 = Error
+
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
 
@@ -228,8 +240,10 @@ type GetTrafficEarningEpochResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Earnings *int `json:"earnings,omitempty"`
+		Earnings *float32 `json:"earnings,omitempty"`
 	}
+	JSON401 *Error
+	JSON500 *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -253,8 +267,10 @@ type GetTrafficEarningLast30daysResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *[]struct {
 		Date     *openapi_types.Date `json:"date,omitempty"`
-		Earnings *int                `json:"earnings,omitempty"`
+		Earnings *float32            `json:"earnings,omitempty"`
 	}
+	JSON401 *Error
+	JSON500 *Error
 }
 
 // Status returns HTTPResponse.Status
@@ -307,12 +323,26 @@ func ParseGetTrafficEarningEpochResponse(rsp *http.Response) (*GetTrafficEarning
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Earnings *int `json:"earnings,omitempty"`
+			Earnings *float32 `json:"earnings,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
@@ -336,12 +366,26 @@ func ParseGetTrafficEarningLast30daysResponse(rsp *http.Response) (*GetTrafficEa
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []struct {
 			Date     *openapi_types.Date `json:"date,omitempty"`
-			Earnings *int                `json:"earnings,omitempty"`
+			Earnings *float32            `json:"earnings,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest Error
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
 
 	}
 
