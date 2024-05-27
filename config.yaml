@@ -1,0 +1,6 @@
+database:
+  user: nokogiri
+  password: justfordevelopment
+  port: 5432
+  host: localhost
+  name: traffic

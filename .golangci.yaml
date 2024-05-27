@@ -1,0 +1,79 @@
+linters-settings:
+  gocognit:
+    # Minimal code complexity to report
+    # Default: 30 (but we recommend 10-20)
+    min-complexity: 20
+  goconst:
+    # Ignore test files.
+    # Default: false
+    ignore-tests: true
+    # Search also for duplicated numbers.
+    # Default: false
+    numbers: true
+    # Minimum value, only works with goconst.numbers
+    # Default: 3
+    min: 2
+    # Maximum value, only works with goconst.numbers
+    # Default: 3
+    max: 2
+    # Ignore when constant is not used as function argument.
+    # Default: true
+    ignore-calls: false
+  cyclop:
+    # Minimal code complexity to report
+    # Default: 15
+    max-complexity: 10
+    skip-tests: true
+  varnamelen:
+    min-name-length: 2
+    ignore-decls:
+      - e *echo.Echo
+  lll:
+    line-length: 120
+linters:
+  # Disable all linters.
+  # Default: false
+  disable-all: true
+  # Enable specific linter
+  # https://golangci-lint.run/usage/linters/#enabled-by-default
+  enable:
+    - errcheck
+    - govet
+    - gofmt
+    - gosimple
+    - staticcheck
+    - ineffassign
+    - typecheck
+    - stylecheck
+    - unused
+    - goconst
+    - gocognit
+    - goimports
+    - cyclop
+    - errorlint
+    - durationcheck
+    - exhaustive
+    - gochecknoglobals
+    - gochecknoinits
+    - funlen
+    - gocritic
+    - gocyclo
+    - gosec
+    - makezero
+    - misspell
+    - nestif
+    - nilnil
+    - nlreturn
+    - noctx
+    - prealloc
+    - predeclared
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - varnamelen
+    - whitespace
+    - wsl
+    - lll
+    - asciicheck
+    - bidichk
+    - decorder

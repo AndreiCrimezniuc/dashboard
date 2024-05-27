@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16.3
+    restart: always
+    shm_size: 128mb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: justfordevelopment
+      POSTGRES_USER: nokogiri
+    volumes:
+      - ./dataset/init.sql:/docker-entrypoint-initdb.d/init.sql
